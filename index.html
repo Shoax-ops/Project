@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>For You ❤️</title>
+
+<style>
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    font-family: 'Segoe UI', sans-serif;
+    background: linear-gradient(135deg, #000, #1a1a1a);
+    color: white;
+    text-align: center;
+    overflow-x: hidden;
+    padding: 10px;
+}
+
+h1 {
+    font-size: 1.8em;
+    text-shadow: 0 0 10px #ff4d6d;
+}
+
+/* Buttons */
+button {
+    width: 90%;
+    max-width: 300px;
+    margin: 10px auto;
+    padding: 14px;
+    border: none;
+    border-radius: 25px;
+    background: #ff4d6d;
+    color: white;
+    font-size: 16px;
+    cursor: pointer;
+    display: block;
+}
+
+/* Box */
+.box {
+    display: none;
+    margin: 20px auto;
+    width: 95%;
+    padding: 15px;
+    border-radius: 15px;
+    background: rgba(255,255,255,0.1);
+}
+
+/* Slideshow */
+.slideshow {
+    width: 100%;
+    max-width: 320px;
+    margin: 15px auto;
+}
+
+.slideshow img {
+    width: 100%;
+    border-radius: 12px;
+    display: none;
+}
+
+/* Hearts */
+.heart {
+    position: fixed;
+    bottom: -10px;
+    animation: float 6s linear infinite;
+    color: #ff4d6d;
+}
+
+@keyframes float {
+    0% { transform: translateY(0); opacity: 1; }
+    100% { transform: translateY(-100vh); opacity: 0; }
+}
+
+/* Final screen */
+.final {
+    padding: 20px;
+}
+
+/* Fix NO button on mobile */
+#noBtn {
+    position: relative;
+}
+</style>
+</head>
+
+<body>
+
+<h1>Happy Birthday Babe ❤️</h1>
+<p>Tap the gifts 🎁</p>
+
+<button onclick="openBox(1)">Gift 1 🎁</button>
+<button onclick="openBox(2)">Gift 2 💌</button>
+<button onclick="openBox(3)">Secret 👀</button>
+<button onclick="openBox(4)">Final ❤️</button>
+
+<div id="box1" class="box"><p id="text1"></p></div>
+<div id="box2" class="box"><p id="text2"></p></div>
+<div id="box3" class="box"><p id="text3"></p></div>
+<div id="box4" class="box"><p id="text4"></p></div>
+
+<!-- Slideshow -->
+<div class="slideshow">
+    <img src="img1.jpg">
+    <img src="img2.jpg">
+    <img src="img3.jpg">
+</div>
+
+<!-- Final Question -->
+<div id="finalQuestion" class="box">
+    <h2>One last thing ❤️</h2>
+    <p>Will you keep choosing me too?</p>
+    <button onclick="sayYes()">Yes ❤️</button>
+    <button id="noBtn" onclick="moveNo()">No 😅</button>
+</div>
+
+<!-- Music -->
+<audio id="music" loop>
+    <source src="Song.mp3" type="audio/mpeg">
+</audio>
+<button onclick="toggleMusic()">🎵 Play / Pause</button>
+
+<script>
+
+// Typewriter
+function typeText(id, text, speed=30){
+    let i = 0;
+    let el = document.getElementById(id);
+    el.innerHTML = "";
+
+    function typing(){
+        if(i < text.length){
+            el.innerHTML += text.charAt(i);
+            i++;
+            setTimeout(typing, speed);
+        }
+    }
+    typing();
+}
+
+// Open boxes
+function openBox(num){
+    document.getElementById("box"+num).style.display = "block";
+
+    if(num === 1){
+        typeText("text1", "From the moment I met you… something felt different ❤️");
+    }
+
+    if(num === 2){
+        typeText("text2", "We’ve had ups and downs… but we always find our way back 💌");
+    }
+
+    if(num === 3){
+        typeText("text3", "I don’t want temporary… I want forever with you 👀");
+    }
+
+    if(num === 4){
+        typeText("text4", "No matter what happens… I’m still choosing you. Always ❤️");
+
+        setTimeout(()=>{
+            document.getElementById("finalQuestion").style.display = "block";
+        }, 4000);
+    }
+}
+
+// Move NO button (mobile safe)
+function moveNo(){
+    let btn = document.getElementById("noBtn");
+
+    let x = Math.random() * (window.innerWidth - 100);
+    let y = Math.random() * (window.innerHeight - 50);
+
+    btn.style.position = "fixed";
+    btn.style.left = x + "px";
+    btn.style.top = y + "px";
+}
+
+// YES action
+function sayYes(){
+    document.body.innerHTML = `
+        <div class="final">
+            <h1>❤️ I KNEW IT ❤️</h1>
+            <h2>You made me the happiest person alive</h2>
+            <p>I love you ❤️</p>
+        </div>
+    `;
+
+    for(let i=0;i<100;i++){
+        let h=document.createElement("div");
+        h.className="heart";
+        h.innerHTML="❤️";
+        h.style.left=Math.random()*100+"vw";
+        h.style.fontSize=(Math.random()*25+10)+"px";
+        document.body.appendChild(h);
+    }
+}
+
+// Music
+function toggleMusic(){
+    let m=document.getElementById("music");
+    if(m.paused) m.play();
+    else m.pause();
+}
+
+// Floating hearts
+setInterval(()=>{
+    let h=document.createElement("div");
+    h.className="heart";
+    h.innerHTML="❤️";
+    h.style.left=Math.random()*100+"vw";
+    document.body.appendChild(h);
+    setTimeout(()=>h.remove(),6000);
+},400);
+
+// Slideshow
+let slides = document.querySelectorAll(".slideshow img");
+let index = 0;
+
+function showSlides(){
+    slides.forEach(s=>s.style.display="none");
+    index++;
+    if(index>slides.length) index=1;
+    slides[index-1].style.display="block";
+    setTimeout(showSlides, 2500);
+}
+showSlides();
+
+</script>
+
+</body>
+</html>
